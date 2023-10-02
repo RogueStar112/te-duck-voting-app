@@ -2,6 +2,20 @@
 
 let minRoundsLeft = 25;
 
+let noOfImagesInGame = 3;
+
+let imageElementIds = [];
+
+// added +1 because img starts at 1.
+for (let i = 1; i < noOfImagesInGame + 1; i++) {
+  let imageObj = {
+    imgSelector: `img${i}`,
+    textSelector: `img${i}_text`,
+  };
+
+  imageElementIds.push(imageObj);
+}
+
 function Product(name, src) {
   this.name = name;
   this.src = src;
@@ -46,78 +60,63 @@ function returnRandomImageID() {
 }
 
 function resetVoteListeners() {
-  let img_1 = document.getElementById("img1");
-  let img_2 = document.getElementById("img2");
-  let img_3 = document.getElementById("img3");
+  // credit to: https://stackoverflow.com/questions/9251837/how-to-remove-all-listeners-in-an-element
+  /* Why is this needed?
 
-  var new_img1 = img_1.cloneNode(true);
-  var new_img2 = img_2.cloneNode(true);
-  var new_img3 = img_3.cloneNode(true);
+    Adding event listeners to individual images creates a lot of gunk, so this clears any excess.
 
-  img_1.parentNode.replaceChild(new_img1, img_1);
-  img_2.parentNode.replaceChild(new_img2, img_2);
-  img_3.parentNode.replaceChild(new_img3, img_3);
+  */
+  for (let i = 0; i < imageElementIds.length; i++) {
+    let imgSelected = document.getElementById(imageElementIds[i].imgSelector);
+
+    let cloneOfImgSelected = imgSelected.cloneNode(true);
+
+    imgSelected.parentNode.replaceChild(cloneOfImgSelected, imgSelected);
+  }
 }
 
 function renderVoteImages() {
-  let img_1 = document.getElementById("img1");
-  let img_2 = document.getElementById("img2");
-  let img_3 = document.getElementById("img3");
+  let imageNumberArray = [];
 
-  let img_1_randInd = returnRandomImageID();
-  let img_2_randInd = returnRandomImageID();
-  let img_3_randInd = returnRandomImageID();
+  /* Okay, what in the holy name is this while loop doing you may ask...
+  It randomly selects numbers based on the array */
 
-  while (
-    img_1_randInd === img_2_randInd ||
-    img_1_randInd == img_3_randInd ||
-    img_2_randInd === img_3_randInd
-  ) {
-    console.log("loop cuz same image");
-    img_1_randInd = returnRandomImageID();
-    img_2_randInd = returnRandomImageID();
-    img_3_randInd = returnRandomImageID();
+  while (imageNumberArray.length < noOfImagesInGame) {
+    let randomID = returnRandomImageID();
+
+    if (imageNumberArray.indexOf(randomID) !== -1) {
+      imageNumberArray.splice(
+        imageNumberArray.indexOf(randomID),
+        1,
+        returnRandomImageID()
+      );
+    } else {
+      imageNumberArray.push(randomID);
+    }
   }
 
-  img_1.setAttribute("src", imageList[img_1_randInd].src);
-  img_2.setAttribute("src", imageList[img_2_randInd].src);
-  img_3.setAttribute("src", imageList[img_3_randInd].src);
+  for (i = 0; i < imageNumberArray.length; i++) {
+    let imgSelected = document.getElementById(imageElementIds[i].imgSelector);
+    let textSelected = document.getElementById(imageElementIds[i].textSelector);
 
-  // img_1.removeEventListener("click", function() { imageList[img_1_randInd].selectImage() });
-  // img_2.removeEventListener("click", function() {imageList[img_2_randInd].selectImage() });
-  // img_3.removeEventListener("click", function() {
+    let productSelected = imageList[imageNumberArray[i]];
 
-  //   imageList[img_3_randInd].selectImage() }
+    imgSelected.setAttribute("src", imageList[imageNumberArray[i]].src);
 
-  // );
+    textSelected.textContent = imageList[imageNumberArray[i]].name;
 
-  img_1.addEventListener(
-    "click",
-    function () {
-      imageList[img_1_randInd].selectImage();
-    },
-    { once: true }
-  );
-  img_2.addEventListener(
-    "click",
-    function () {
-      imageList[img_2_randInd].selectImage();
-    },
-    { once: true }
-  );
-  img_3.addEventListener(
-    "click",
-    function () {
-      imageList[img_3_randInd].selectImage();
-    },
-    { once: true }
-  );
-
-  imageList[img_1_randInd].times_shown++;
-  imageList[img_2_randInd].times_shown++;
-  imageList[img_3_randInd].times_shown++;
+    imgSelected.addEventListener("click", function () {
+      productSelected.selectImage();
+    });
+  }
+  // }
 }
 
 renderVoteImages();
 
-// credit to: https://stackoverflow.com/questions/9251837/how-to-remove-all-listeners-in-an-element
+/* 
+function resetVoteListeners();
+credit to: https://stackoverflow.com/questions/9251837/how-to-remove-all-listeners-in-an-element
+
+
+*/
