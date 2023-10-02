@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="reset.css" />
     <link rel="stylesheet" href="style.css" />
-    <script src="app.js" defer></script>
+    <script src="app.js" defer async></script>
   </head>
   <body>
     <header>
@@ -19,20 +19,25 @@
       <div id="grid-container">
         <div id="votes-container">
           <h2>Votes</h2>
+
+          <div id="votes"></div>
         </div>
 
         <div>
           <div id="images-container">
             <div id="img1-container">
               <img id="img1" src="https://placehold.co/200x150" alt="" />
+              <section id="img1_text"></section>
             </div>
 
             <div id="img2-container">
               <img id="img2" src="https://placehold.co/200x150" alt="" />
+              <section id="img2_text"></section>
             </div>
 
             <div id="img3-container">
               <img id="img3" src="https://placehold.co/200x150" alt="" />
+              <section id="img3_text"></section>
             </div>
           </div>
         </div>
@@ -40,9 +45,9 @@
         <div id="gap"></div>
 
         <div id="text-container">
-          <section id="img1_text">Test1</section>
-          <section id="img2_text">Test2</section>
-          <section id="img3_text">Test3</section>
+          <p id="voting-text">
+            Voting rounds left: <span id="rounds-left"></span>
+          </p>
         </div>
       </div>
     </main>

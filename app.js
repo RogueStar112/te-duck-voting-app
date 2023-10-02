@@ -1,6 +1,6 @@
 // const fs = require("fs");
 
-let minRoundsLeft = 25;
+let roundsLeft = 25;
 
 let noOfImagesInGame = 3;
 
@@ -24,13 +24,19 @@ function Product(name, src) {
 }
 
 Product.prototype.selectImage = function () {
-  this.times_voted++;
-  console.log(
-    `Voted image: ${this.name}. You voted for this ${this.times_voted}`
-  );
+  if (roundsLeft > 0) {
+    this.times_voted++;
+    roundsLeft--;
+    // console.log(
+    //   `Voted image: ${this.name}. You voted for this ${this.times_voted}`
+    // );
 
-  resetVoteListeners();
-  renderVoteImages();
+    resetVoteListeners();
+    renderVoteImages();
+    renderRoundsLeft();
+  } else {
+    renderVotes();
+  }
 };
 
 let imageList = [
@@ -101,6 +107,8 @@ function renderVoteImages() {
 
     let productSelected = imageList[imageNumberArray[i]];
 
+    productSelected.times_shown++;
+
     imgSelected.setAttribute("src", imageList[imageNumberArray[i]].src);
 
     textSelected.textContent = imageList[imageNumberArray[i]].name;
@@ -112,7 +120,27 @@ function renderVoteImages() {
   // }
 }
 
+function renderRoundsLeft() {
+  let rounds = document.getElementById("rounds-left");
+  rounds.textContent = roundsLeft;
+}
+
+function renderVotes() {
+  let votes = document.getElementById("votes");
+
+  let ul = document.createElement("ul");
+
+  for (let i = 0; i < imageList.length; i++) {
+    let li = document.createElement("li");
+    li.textContent = `${imageList[i].name}: ${imageList[i].times_voted} votes`;
+    ul.appendChild(li);
+  }
+
+  votes.appendChild(ul);
+}
+
 renderVoteImages();
+renderRoundsLeft();
 
 /* 
 function resetVoteListeners();
