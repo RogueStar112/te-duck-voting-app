@@ -128,15 +128,17 @@ function renderRoundsLeft() {
 function renderVotes() {
   let votes = document.getElementById("votes");
 
-  let ul = document.createElement("ul");
+  let ol = document.createElement("ol");
 
   for (let i = 0; i < imageList.length; i++) {
     let li = document.createElement("li");
-    li.textContent = `${imageList[i].name}: ${imageList[i].times_voted} votes`;
-    ul.appendChild(li);
+    li.textContent = `#${i + 1}: ${imageList[i].name}: ${
+      imageList[i].times_voted
+    } votes`;
+    ol.appendChild(li);
   }
 
-  votes.appendChild(ul);
+  votes.appendChild(ol);
 }
 
 renderVoteImages();
