@@ -2,18 +2,42 @@
 
 let roundsLeft = 25;
 
-let noOfImagesInGame = 3;
+let noOfImagesInGame = 5;
 
 let imageElementIds = [];
 
-// added +1 because img starts at 1.
-for (let i = 1; i < noOfImagesInGame + 1; i++) {
-  let imageObj = {
-    imgSelector: `img${i}`,
-    textSelector: `img${i}_text`,
-  };
+let previousImagesArray = [];
 
-  imageElementIds.push(imageObj);
+// added +1 because img starts at 1.
+
+function renderImagePlaceholders() {
+  for (let i = 1; i < noOfImagesInGame + 1; i++) {
+    let imageObj = {
+      containerSelector: `img${i}-container`,
+      imgSelector: `img${i}`,
+      textSelector: `img${i}_text`,
+    };
+
+    imageElementIds.push(imageObj);
+  }
+
+  let imagesContainer = document.getElementById("images-container");
+
+  for (i = 0; i < noOfImagesInGame; i++) {
+    let newImageContainer = document.createElement("div");
+    newImageContainer.setAttribute("id", imageElementIds[i].containerSelector);
+
+    let newImage = document.createElement("img");
+    newImage.setAttribute("id", imageElementIds[i].imgSelector);
+
+    let newImageText = document.createElement("section");
+    newImageText.setAttribute("id", imageElementIds[i].textSelector);
+
+    newImageContainer.appendChild(newImage);
+    newImageContainer.appendChild(newImageText);
+
+    imagesContainer.appendChild(newImageContainer);
+  }
 }
 
 function Product(name, src) {
@@ -32,10 +56,10 @@ Product.prototype.selectImage = function () {
     // );
 
     resetVoteListeners();
-    renderVoteImages();
+    renderVoteImages(previousImagesArray);
     renderRoundsLeft();
   } else {
-    renderVotes();
+    //   showResultsButton();
   }
 };
 
@@ -81,41 +105,55 @@ function resetVoteListeners() {
   }
 }
 
-function renderVoteImages() {
-  let imageNumberArray = [];
+function renderVoteImages(prevArray = []) {
+  if (roundsLeft === 0) {
+    alert("Voting is over. You may now see the results.");
+    showResultsButton();
+  } else {
+    let imageNumberArray = [];
+    previousImagesArray = [];
 
-  /* Okay, what in the holy name is this while loop doing you may ask...
-  It randomly selects numbers based on the array */
+    /* Okay, what in the holy name is this while loop doing you may ask...
+    It prevents duplicates from appearing on the array. */
 
-  while (imageNumberArray.length < noOfImagesInGame) {
-    let randomID = returnRandomImageID();
+    while (imageNumberArray.length < noOfImagesInGame) {
+      let randomID = returnRandomImageID();
 
-    if (imageNumberArray.indexOf(randomID) !== -1) {
-      imageNumberArray.splice(
-        imageNumberArray.indexOf(randomID),
-        1,
-        returnRandomImageID()
-      );
-    } else {
-      imageNumberArray.push(randomID);
+      if (
+        imageNumberArray.indexOf(randomID) !== -1 ||
+        prevArray.indexOf(randomID) !== -1
+      ) {
+        imageNumberArray.splice(imageNumberArray.indexOf(randomID), 1);
+      } else {
+        imageNumberArray.push(randomID);
+      }
     }
-  }
 
-  for (i = 0; i < imageNumberArray.length; i++) {
-    let imgSelected = document.getElementById(imageElementIds[i].imgSelector);
-    let textSelected = document.getElementById(imageElementIds[i].textSelector);
+    /* Prevents previous images from being shown consistently each round. */
+    for (let i = 0; i < imageNumberArray.length; i++) {
+      previousImagesArray.push(imageNumberArray[i]);
+    }
 
-    let productSelected = imageList[imageNumberArray[i]];
+    // console.log("PREV IMAGES ARRAY", previousImagesArray);
 
-    productSelected.times_shown++;
+    for (i = 0; i < imageNumberArray.length; i++) {
+      let imgSelected = document.getElementById(imageElementIds[i].imgSelector);
+      let textSelected = document.getElementById(
+        imageElementIds[i].textSelector
+      );
 
-    imgSelected.setAttribute("src", imageList[imageNumberArray[i]].src);
+      let productSelected = imageList[imageNumberArray[i]];
 
-    textSelected.textContent = imageList[imageNumberArray[i]].name;
+      productSelected.times_shown++;
 
-    imgSelected.addEventListener("click", function () {
-      productSelected.selectImage();
-    });
+      imgSelected.setAttribute("src", imageList[imageNumberArray[i]].src);
+
+      textSelected.textContent = imageList[imageNumberArray[i]].name;
+
+      imgSelected.addEventListener("click", function () {
+        productSelected.selectImage();
+      });
+    }
   }
   // }
 }
@@ -128,6 +166,7 @@ function renderRoundsLeft() {
 function renderVotes() {
   let votes = document.getElementById("votes");
 
+  // RENDERS LIST ON LEFT
   let ol = document.createElement("ol");
 
   for (let i = 0; i < imageList.length; i++) {
@@ -139,8 +178,59 @@ function renderVotes() {
   }
 
   votes.appendChild(ol);
+
+  let graphContainer = document.getElementById("graph");
+
+  const ctx = document.getElementById("graph-container");
+  // ctx.canvas.parentNode.style.height = "128px";
+  // ctx.canvas.parentNode.style.width = "128px";
+
+  let graphLabels = [];
+  let graphData_votes = [];
+  let graphData_shown = [];
+
+  for (i = 0; i < imageList.length; i++) {
+    if (imageList[i].times_voted != 0) {
+      graphLabels.push(imageList[i].name);
+      graphData_votes.push(imageList[i].times_voted);
+      graphData_shown.push(imageList[i].times_shown);
+    }
+  }
+
+  const config = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: graphLabels,
+      datasets: [
+        {
+          type: "bar",
+          label: "# of votes",
+          data: graphData_votes,
+          borderWidth: 6,
+          backgroundColor: ["red", "#cdaa7f", "skyblue", "green", "orange"],
+        },
+        {
+          type: "bar",
+          label: "# of times shown",
+          data: graphData_shown,
+          borderWidth: 6,
+          backgroundColor: ["red", "#cdaa7f", "skyblue", "green", "orange"],
+        },
+      ],
+    },
+  });
 }
 
+let showResultsBtn = document.getElementById("show-results");
+
+function showResultsButton() {
+  showResultsBtn.setAttribute("class", "");
+}
+
+showResultsBtn.addEventListener("click", renderVotes, { once: true });
+
+// At the start of the program, call these.
+renderImagePlaceholders();
 renderVoteImages();
 renderRoundsLeft();
 

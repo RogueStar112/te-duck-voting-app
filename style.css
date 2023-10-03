@@ -23,7 +23,7 @@ header {
 
 #grid-container {
   display: grid;
-  grid-template-rows: 1fr 0.2fr 1fr;
+  grid-template-rows: 1fr 0.2fr 0.8fr;
   grid-template-columns: 200px 800px;
 }
 
@@ -60,7 +60,8 @@ header {
 
 #text-container {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  text-align: center;
 
   border: 1px solid black;
 }
@@ -69,10 +70,23 @@ header {
   border: 1px solid black;
 }
 
-#voting-text {
-  margin-top: 1rem;
+#gap p {
+  margin: 1rem;
 }
 
 #votes-container h2 {
   margin-top: 20px;
+}
+
+.display-none {
+  display: none;
+}
+
+#text-container {
+  height: 300px;
+}
+
+#images-container div {
+  border-radius: 20px;
+  border: 2px solid black;
 }

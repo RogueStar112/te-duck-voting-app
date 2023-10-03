@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="reset.css" />
     <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="app.js" defer async></script>
   </head>
   <body>
@@ -23,9 +24,8 @@
           <div id="votes"></div>
         </div>
 
-        <div>
-          <div id="images-container">
-            <div id="img1-container">
+        <div id="images-container">
+          <!-- <div id="img1-container">
               <img id="img1" src="https://placehold.co/200x150" alt="" />
               <section id="img1_text"></section>
             </div>
@@ -38,16 +38,20 @@
             <div id="img3-container">
               <img id="img3" src="https://placehold.co/200x150" alt="" />
               <section id="img3_text"></section>
-            </div>
-          </div>
+            </div> -->
         </div>
 
-        <div id="gap"></div>
-
-        <div id="text-container">
+        <div id="gap">
+          <p>Vote for a product above.</p>
           <p id="voting-text">
             Voting rounds left: <span id="rounds-left"></span>
           </p>
+
+          <button id="show-results" class="display-none">Show results</button>
+        </div>
+
+        <div id="text-container">
+          <canvas id="graph-container"> </canvas>
         </div>
       </div>
     </main>
