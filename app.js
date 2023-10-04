@@ -10,9 +10,8 @@ let imageElementIds = [];
 
 let previousImagesArray = [];
 
-// added +1 because img starts at 1.
-
 function renderImagePlaceholders() {
+  // added +1 because img starts at 1.
   for (let i = 1; i < noOfImagesInGame + 1; i++) {
     let imageObj = {
       containerSelector: `img${i}-container`,
@@ -26,6 +25,7 @@ function renderImagePlaceholders() {
   let imagesContainer = document.getElementById("images-container");
 
   for (i = 0; i < noOfImagesInGame; i++) {
+    // The HTML equivalent is shown in index.html (lines 38+)
     let newImageContainer = document.createElement("div");
     newImageContainer.setAttribute("id", imageElementIds[i].containerSelector);
 
@@ -87,6 +87,19 @@ let imageList = [
   new Product("Wine Glass", "./assets/wine-glass.jpg"),
 ];
 
+// credit to: https://byby.dev/js-sort-by-object-property
+function compareByVotes(a, b) {
+  return b.times_voted - a.times_voted;
+}
+
+let imageListSorted = [...imageList];
+
+imageListSorted.sort(function (a, b) {
+  return compareByVotes(a, b);
+});
+
+console.log("ILS", imageListSorted);
+
 function returnRandomImageID() {
   return Math.floor(Math.random() * imageList.length);
 }
@@ -99,11 +112,16 @@ function resetVoteListeners() {
 
   */
   for (let i = 0; i < imageElementIds.length; i++) {
-    let imgSelected = document.getElementById(imageElementIds[i].imgSelector);
+    let containerSelected = document.getElementById(
+      imageElementIds[i].containerSelector
+    );
 
-    let cloneOfImgSelected = imgSelected.cloneNode(true);
+    let cloneOfImgSelected = containerSelected.cloneNode(true);
 
-    imgSelected.parentNode.replaceChild(cloneOfImgSelected, imgSelected);
+    containerSelected.parentNode.replaceChild(
+      cloneOfImgSelected,
+      containerSelected
+    );
   }
 }
 
@@ -139,6 +157,9 @@ function renderVoteImages(prevArray = []) {
     // console.log("PREV IMAGES ARRAY", previousImagesArray);
 
     for (i = 0; i < imageNumberArray.length; i++) {
+      let containerSelected = document.getElementById(
+        imageElementIds[i].containerSelector
+      );
       let imgSelected = document.getElementById(imageElementIds[i].imgSelector);
       let textSelected = document.getElementById(
         imageElementIds[i].textSelector
@@ -152,7 +173,7 @@ function renderVoteImages(prevArray = []) {
 
       textSelected.textContent = imageList[imageNumberArray[i]].name;
 
-      imgSelected.addEventListener("click", function () {
+      containerSelected.addEventListener("click", function () {
         productSelected.selectImage();
       });
     }
@@ -166,20 +187,48 @@ function renderRoundsLeft() {
 }
 
 function renderVotes() {
-  let votes = document.getElementById("votes");
+  let votesTable = document.getElementById("votes-tbody");
 
-  // RENDERS LIST ON LEFT
-  let ol = document.createElement("ol");
+  for (i = 0; i < imageList.length; i++) {
+    let tr = document.createElement("tr");
 
-  for (let i = 0; i < imageList.length; i++) {
-    let li = document.createElement("li");
-    li.textContent = `#${i + 1}: ${imageList[i].name}: ${
-      imageList[i].times_voted
-    } votes`;
-    ol.appendChild(li);
+    let numberTd = document.createElement("td");
+
+    if (i == 0) {
+      numberTd.classList.add("first-place");
+    } else if (i == 1) {
+      numberTd.classList.add("second-place");
+    } else if (i == 2) {
+      numberTd.classList.add("third-place");
+    }
+
+    let nameTd = document.createElement("td");
+    let votesTd = document.createElement("td");
+
+    numberTd.textContent = i;
+    nameTd.textContent = imageList[i].name;
+    votesTd.textContent = imageList[i].times_voted;
+
+    tr.appendChild(numberTd);
+    tr.appendChild(nameTd);
+    tr.appendChild(votesTd);
+    votesTable.appendChild(tr);
   }
 
-  votes.appendChild(ol);
+  // let votes = document.getElementById("votes");
+
+  // // RENDERS LIST ON LEFT
+  // let ol = document.createElement("ol");
+
+  // for (let i = 0; i < imageList.length; i++) {
+  //   let li = document.createElement("li");
+  //   li.textContent = `#${i + 1}: ${imageList[i].name}: ${
+  //     imageList[i].times_voted
+  //   } votes`;
+  //   ol.appendChild(li);
+  // }
+
+  // votes.appendChild(ol);
 
   let graphContainer = document.getElementById("graph");
 

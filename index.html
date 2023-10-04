@@ -6,22 +6,46 @@
 
     <title>Duck Voting App</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="reset.css" />
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="app.js" defer async></script>
   </head>
-  <body>
+  <body class="font-montserrat">
     <header>
       <h1>Duck Voting App</h1>
+      <p>
+        Duck Company wants you to vote for which product you think is best. Cast
+        your vote below!
+      </p>
     </header>
 
     <main>
       <div id="grid-container">
         <div id="votes-container">
-          <h2>Votes</h2>
+          <h2>Votes Table</h2>
 
           <div id="votes"></div>
+
+          <div id="votes-table-container">
+            <table id="votes-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Votes</th>
+                </tr>
+              </thead>
+
+              <tbody id="votes-tbody"></tbody>
+            </table>
+          </div>
         </div>
 
         <div id="images-container">
@@ -42,10 +66,12 @@
         </div>
 
         <div id="gap">
-          <p>Vote for a product above.</p>
-          <p id="voting-text">
-            Voting rounds left: <span id="rounds-left"></span>
-          </p>
+          <div class="voting-text-container">
+            <p id="voting-prompt">Vote for a product above.</p>
+            <p id="voting-text">
+              Voting rounds left: <span id="rounds-left"></span>
+            </p>
+          </div>
 
           <button id="show-results" class="display-none">Show results</button>
         </div>
