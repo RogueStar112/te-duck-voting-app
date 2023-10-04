@@ -2,7 +2,7 @@
 
 let roundsLeft = 25;
 
-let noOfImagesInGame = 5;
+let noOfImagesInGame = 3;
 
 let imageElementIds = [];
 
@@ -190,7 +190,7 @@ function renderVotes() {
   let graphData_shown = [];
 
   for (i = 0; i < imageList.length; i++) {
-    if (imageList[i].times_voted != 0) {
+    if (imageList[i].times_shown != 0) {
       graphLabels.push(imageList[i].name);
       graphData_votes.push(imageList[i].times_voted);
       graphData_shown.push(imageList[i].times_shown);
@@ -206,15 +206,15 @@ function renderVotes() {
           type: "bar",
           label: "# of votes",
           data: graphData_votes,
-          borderWidth: 6,
-          backgroundColor: ["red", "#cdaa7f", "skyblue", "green", "orange"],
+          // borderWidth: 6,
+          backgroundColor: ["red", "green", "skyblue", "purple", "orange"],
         },
         {
           type: "bar",
           label: "# of times shown",
           data: graphData_shown,
-          borderWidth: 6,
-          backgroundColor: ["red", "#cdaa7f", "skyblue", "green", "orange"],
+          // borderWidth: 6,
+          backgroundColor: ["red", "green", "skyblue", "purple", "orange"],
         },
       ],
     },
