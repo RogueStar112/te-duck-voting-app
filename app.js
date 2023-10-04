@@ -1,8 +1,10 @@
 // const fs = require("fs");
 
-let roundsLeft = 25;
+// CHANGEABLE PARAMETERS ///////
+let roundsLeft = 5;
 
 let noOfImagesInGame = 3;
+////////////////////////////////
 
 let imageElementIds = [];
 
@@ -219,6 +221,8 @@ function renderVotes() {
       ],
     },
   });
+
+  storeDataLocally();
 }
 
 let showResultsBtn = document.getElementById("show-results");
@@ -229,10 +233,38 @@ function showResultsButton() {
 
 showResultsBtn.addEventListener("click", renderVotes, { once: true });
 
+function storeDataLocally() {
+  const productsStringified = JSON.stringify(imageList);
+
+  localStorage.setItem("products", productsStringified);
+}
+
+function retrieveDataLocally() {
+  const parseProductData = JSON.parse(localStorage.getItem("products"));
+
+  if (parseProductData) {
+    // console.log("IL", imageList);
+    // console.log("PPD", parseProductData);
+    // console.log(imageList === parseProductData);
+
+    for (let i = 0; i < imageList.length; i++) {
+      if (imageList[i].name === parseProductData[i].name) {
+        imageList[i].times_shown = parseProductData[i].times_shown;
+        imageList[i].times_voted = parseProductData[i].times_voted;
+      }
+    }
+
+    console.log("Data retrieved successfully!");
+  } else {
+    console.log("Data not retrieved.");
+  }
+}
+
 // At the start of the program, call these.
 renderImagePlaceholders();
 renderVoteImages();
 renderRoundsLeft();
+retrieveDataLocally();
 
 /* 
 function resetVoteListeners();
