@@ -1,9 +1,9 @@
 // const fs = require("fs");
 
 // CHANGEABLE PARAMETERS ///////
-let roundsLeft = 5;
+let roundsLeft = 25;
 
-let noOfImagesInGame = 3;
+let noOfImagesInGame = 4;
 ////////////////////////////////
 
 let imageElementIds = [];
@@ -92,14 +92,6 @@ function compareByVotes(a, b) {
   return b.times_voted - a.times_voted;
 }
 
-let imageListSorted = [...imageList];
-
-imageListSorted.sort(function (a, b) {
-  return compareByVotes(a, b);
-});
-
-console.log("ILS", imageListSorted);
-
 function returnRandomImageID() {
   return Math.floor(Math.random() * imageList.length);
 }
@@ -187,9 +179,10 @@ function renderRoundsLeft() {
 }
 
 function renderVotes() {
+  sortData();
   let votesTable = document.getElementById("votes-tbody");
 
-  for (i = 0; i < imageList.length; i++) {
+  for (i = 0; i < imageListSorted.length; i++) {
     let tr = document.createElement("tr");
 
     let numberTd = document.createElement("td");
@@ -206,8 +199,8 @@ function renderVotes() {
     let votesTd = document.createElement("td");
 
     numberTd.textContent = i;
-    nameTd.textContent = imageList[i].name;
-    votesTd.textContent = imageList[i].times_voted;
+    nameTd.textContent = imageListSorted[i].name;
+    votesTd.textContent = imageListSorted[i].times_voted;
 
     tr.appendChild(numberTd);
     tr.appendChild(nameTd);
@@ -240,11 +233,11 @@ function renderVotes() {
   let graphData_votes = [];
   let graphData_shown = [];
 
-  for (i = 0; i < imageList.length; i++) {
-    if (imageList[i].times_shown != 0) {
-      graphLabels.push(imageList[i].name);
-      graphData_votes.push(imageList[i].times_voted);
-      graphData_shown.push(imageList[i].times_shown);
+  for (i = 0; i < imageListSorted.length; i++) {
+    if (imageListSorted[i].times_shown != 0) {
+      graphLabels.push(imageListSorted[i].name);
+      graphData_votes.push(imageListSorted[i].times_voted);
+      graphData_shown.push(imageListSorted[i].times_shown);
     }
   }
 
@@ -265,9 +258,16 @@ function renderVotes() {
           label: "# of times shown",
           data: graphData_shown,
           // borderWidth: 6,
-          backgroundColor: ["red", "green", "skyblue", "purple", "orange"],
+          backgroundColor: ["lightgrey"],
         },
       ],
+    },
+    options: {
+      scales: {
+        x: {
+          stacked: true,
+        },
+      },
     },
   });
 
@@ -309,11 +309,22 @@ function retrieveDataLocally() {
   }
 }
 
+let imageListSorted = [...imageList];
+
+function sortData() {
+  imageListSorted.sort(function (a, b) {
+    return compareByVotes(a, b);
+  });
+}
+
 // At the start of the program, call these.
 renderImagePlaceholders();
 renderVoteImages();
 renderRoundsLeft();
 retrieveDataLocally();
+sortData();
+
+console.log("ILS", imageListSorted);
 
 /* 
 function resetVoteListeners();

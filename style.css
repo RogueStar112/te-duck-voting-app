@@ -159,3 +159,7 @@ header h1 {
   background-color: #b87333;
   padding: 10px;
 }
+
+tr {
+  margin: 10px;
+}
