@@ -3,7 +3,7 @@
 // CHANGEABLE PARAMETERS ///////
 let roundsLeft = 10;
 
-let noOfImagesInGame = 3;
+let noOfImagesInGame = 4;
 ////////////////////////////////
 
 let pastCharts = [];
