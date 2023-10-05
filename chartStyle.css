@@ -1,0 +1,55 @@
+body {
+
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+
+#main-container {
+
+  display: grid;
+  grid-template-columns: 250px 1fr 250px;
+  justify-content: center;
+
+}
+
+#description-container {
+  height: 100px;
+  text-align: center;
+}
+
+
+.chart {
+
+  max-width: 780px;
+}
+
+.font-montserrat {
+  font-family: Montserrat;
+}
+
+main > * {
+  border: 1px solid black;
+}
+
+#main-container > * {
+  border: 1px solid black;
+}
+
+#chart-history-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: space-between;
+  overflow-y: scroll;
+  max-height: 640px;
+}
+
+#chart-history-container > * {
+  margin: 10px;
+}
+
+#chart-description {
+  margin: 10px;
+}

@@ -163,3 +163,7 @@ header h1 {
 tr {
   margin: 10px;
 }
+
+footer {
+  text-align: center;
+}

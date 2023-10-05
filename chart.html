@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Last Chart Results</title>
+  <link
+  href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;800&display=swap"
+  rel="stylesheet"
+/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="getChartsFromApp.js" defer></script>
+  <link rel="stylesheet" href="chartStyle.css">
+</head>
+<body>
+  <header></header>
+
+  <main class="font-montserrat">
+
+    <div id="description-container">
+
+      <h1>Duck Chart Analysis!</h1>
+      <p id="chart-description">Most recent chart</p>
+    </div>
+
+    <div id="main-container">
+      
+      <div id="chart-history-container">
+
+        <img src="https://placehold.co/200x100" alt="">
+        <img src="https://placehold.co/200x100" alt="">
+        <img src="https://placehold.co/200x100" alt="">
+        <img src="https://placehold.co/200x100" alt="">
+        <img src="https://placehold.co/200x100" alt="">
+        <img src="https://placehold.co/200x100" alt="">
+        <img src="https://placehold.co/200x100" alt="">
+      </div>
+
+      <canvas id="chart" class="chart"></canvas>
+
+      <div id="chart-trends-container"></div>
+    </div>
+  </main>
+
+  <footer></footer>
+</body>
+</html>

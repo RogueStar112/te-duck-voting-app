@@ -3,7 +3,7 @@
 // CHANGEABLE PARAMETERS ///////
 let roundsLeft = 25;
 
-let noOfImagesInGame = 4;
+let noOfImagesInGame = 3;
 ////////////////////////////////
 
 let imageElementIds = [];
@@ -330,5 +330,5 @@ console.log("ILS", imageListSorted);
 function resetVoteListeners();
 credit to: https://stackoverflow.com/questions/9251837/how-to-remove-all-listeners-in-an-element
 
-
+Credit to GJ for the stacked chart idea.
 */
