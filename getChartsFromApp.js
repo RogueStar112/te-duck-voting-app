@@ -1,4 +1,5 @@
 const parseProductData = JSON.parse(localStorage.getItem("products"));
+const chartHistoryContainer = document.getElementById('chart-history-container');
 
 let graphLabels = [];
 let graphData_votes = [];
@@ -11,7 +12,7 @@ let pastCharts = [];
 
 if (localStorage.getItem("pastCharts")) {
   console.log("Past charts found!")
-  pastCharts = JSON.parse(localStorage.getItem("pastCharts"));
+  pastCharts = JSON.parse(localStorage.getItem("pastCharts")).reverse();
 } 
 
 // credit to: https://byby.dev/js-sort-by-object-property
@@ -21,6 +22,10 @@ function compareByVotes(a, b) {
 
 function sortData() {
   imageListSorted.sort(function (a, b) {
+    return compareByVotes(a, b);
+  });
+
+  pastCharts.sort(function (a, b) {
     return compareByVotes(a, b);
   });
 }
@@ -38,9 +43,7 @@ for (i = 0; i < imageListSorted.length; i++) {
 const ctx = document.getElementById('chart');
 
 
-
-
-const config = new Chart(ctx, {
+let config = new Chart(ctx, {
   type: "bar",
   data: {
     labels: graphLabels,
@@ -69,3 +72,86 @@ const config = new Chart(ctx, {
     },
   },
 });
+
+function replaceChart(chart_id) {
+
+}
+
+function renderChartHistory() {
+
+
+
+  for (let i=0; i<pastCharts.length; i++) {
+    let div = document.createElement('div');
+    div.classList.add("chart-history-cell");
+
+    div.setAttribute("id", `pastChart-${i}`);    
+    chartHistoryContainer.appendChild(div);
+
+    div_chartDescriptor = document.createElement("div");
+    div_chartDescriptor.classList.add("chart-descriptor");
+
+    div_chartDescriptor.textContent = `Chart ${i+1}`
+
+    div.appendChild(div_chartDescriptor);
+
+    div.addEventListener("click", function() {
+      replaceChart(pastCharts[i])
+    })
+    // for (let x=0; x<pastCharts[i].length; x++) {
+
+      
+    //     // console.log(pastCharts[i][x]);
+
+    // }
+  }
+}
+
+renderChartHistory();
+
+function replaceChart(chart) {
+  console.log(chart);
+  console.log('POTAOEPUJWOPAOPJ')
+
+  config.destroy();
+
+  let newDataset_shown = []
+  let newDataset_votes = []
+
+
+
+  for(let i = 0; i<chart.length; i++) {
+    newDataset_shown.push(chart[i].times_shown);
+    newDataset_votes.push(chart[i].times_voted);
+  }
+
+  config = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: graphLabels,
+      datasets: [
+        {
+          type: "bar",
+          label: "# of votes",
+          data: newDataset_votes,
+          // borderWidth: 6,
+          backgroundColor: ["red", "green", "skyblue", "purple", "orange"],
+        },
+        {
+          type: "bar",
+          label: "# of times shown",
+          data: newDataset_shown,
+          // borderWidth: 6,
+          backgroundColor: ["lightgrey"],
+        },
+      ],
+    },
+    options: {
+      scales: {
+        x: {
+          stacked: true,
+        },
+      },
+    },
+  });
+}
