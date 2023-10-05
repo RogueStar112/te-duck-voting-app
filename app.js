@@ -1,7 +1,7 @@
 // const fs = require("fs");
 
 // CHANGEABLE PARAMETERS ///////
-let roundsLeft = 5;
+let roundsLeft = 10;
 
 let noOfImagesInGame = 3;
 ////////////////////////////////
@@ -294,7 +294,7 @@ function storeDataLocally() {
 
   localStorage.setItem("products", productsStringified);
 
-  pastCharts.push(imageList);
+  pastCharts.push(imageListSorted);
 
   localStorage.setItem("pastCharts", JSON.stringify(pastCharts));
 }

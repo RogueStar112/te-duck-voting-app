@@ -79,7 +79,7 @@ function replaceChart(chart_id) {
 
 function renderChartHistory() {
 
-
+  sortData();
 
   for (let i=0; i<pastCharts.length; i++) {
     let div = document.createElement('div');
@@ -95,8 +95,12 @@ function renderChartHistory() {
 
     div.appendChild(div_chartDescriptor);
 
+    let currentChart = pastCharts[i];
+    
+    console.log("currentChart", currentChart);
+
     div.addEventListener("click", function() {
-      replaceChart(pastCharts[i])
+      replaceChart(currentChart)
     })
     // for (let x=0; x<pastCharts[i].length; x++) {
 
