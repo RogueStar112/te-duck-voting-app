@@ -1,10 +1,17 @@
 // const fs = require("fs");
 
 // CHANGEABLE PARAMETERS ///////
-let roundsLeft = 25;
+let roundsLeft = 5;
 
 let noOfImagesInGame = 3;
 ////////////////////////////////
+
+let pastCharts = [];
+
+if (localStorage.getItem("pastCharts")) {
+  console.log("Past charts found!")
+  pastCharts = JSON.parse(localStorage.getItem("pastCharts"));
+} 
 
 let imageElementIds = [];
 
@@ -286,10 +293,15 @@ function storeDataLocally() {
   const productsStringified = JSON.stringify(imageList);
 
   localStorage.setItem("products", productsStringified);
+
+  pastCharts.push(imageList);
+
+  localStorage.setItem("pastCharts", JSON.stringify(pastCharts));
 }
 
 function retrieveDataLocally() {
   const parseProductData = JSON.parse(localStorage.getItem("products"));
+  const parsePastCharts = JSON.parse(localStorage.getItem("pastCharts"));
 
   if (parseProductData) {
     // console.log("IL", imageList);
@@ -306,6 +318,13 @@ function retrieveDataLocally() {
     console.log("Data retrieved successfully!");
   } else {
     console.log("Data not retrieved.");
+  }
+
+  if (parsePastCharts) {
+    console.log("Past charts data retrieved successfully!") 
+    console.log("pC", parsePastCharts);
+  } else {
+    console.log("Past charts data NOT retrieved successfully.")
   }
 }
 

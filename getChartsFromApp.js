@@ -7,6 +7,13 @@ let graphData_shown = [];
 
 let imageListSorted = [...parseProductData];
 
+let pastCharts = [];
+
+if (localStorage.getItem("pastCharts")) {
+  console.log("Past charts found!")
+  pastCharts = JSON.parse(localStorage.getItem("pastCharts"));
+} 
+
 // credit to: https://byby.dev/js-sort-by-object-property
 function compareByVotes(a, b) {
   return b.times_voted - a.times_voted;

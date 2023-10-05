@@ -41,13 +41,31 @@ main > * {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  justify-content: space-between;
+  justify-content: center;
   overflow-y: scroll;
   max-height: 640px;
 }
 
 #chart-history-container > * {
   margin: 10px;
+}
+
+#chart-history-container h2 {
+  text-align: center;
+}
+
+.chart-history-cell {
+  height: 100px;
+  flex-shrink: 0;
+  background-color: maroon;
+  position: relative;
+}
+
+.chart-descriptor {
+  position: absolute;
+  bottom: 0;
+  color: white;
+  padding: 10px;
 }
 
 #chart-description {
