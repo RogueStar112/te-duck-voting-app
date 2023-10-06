@@ -107,6 +107,10 @@ header h1 {
   height: 300px;
 }
 
+#text-container {
+  justify-content: center;
+}
+
 #images-container div {
   border-radius: 20px;
   border: 2px solid black;
@@ -166,4 +170,17 @@ tr {
 
 footer {
   text-align: center;
+}
+
+#text-container {
+  position: relative;
+}
+
+#graph-container {
+  /* position: absolute; */
+  margin: 0 auto;
+  height: 300px;
+  width: 780px;
+  /* max-width: 600px;
+  max-height: 400px; */
 }
